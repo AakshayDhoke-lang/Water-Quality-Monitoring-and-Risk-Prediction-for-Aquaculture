@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AquaPulse | Intelligent Aquaculture</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  </head>
+  <body class="noise">
+    <!-- Navbar -->
+    <nav>
+      <div class="logo-container" id="logo-home">
+        <div class="logo-icon"><i class="fas fa-water"></i></div>
+        <span>Aqua<span class="text-gradient">Pulse</span></span>
+      </div>
+      <div class="nav-links ml-8 hidden md:flex">
+        <button id="nav-home" class="active">Home</button>
+        <button id="nav-dashboard">Dashboard</button>
+        <button id="nav-disease">Neural Scan</button>
+        <button id="nav-species">Species Reference</button>
+        <button id="nav-simulation">Simulation Lab</button>
+        <button id="nav-ai-doctor">AI Doctor</button>
+        <button id="nav-challenge">Challenge</button>
+        <button id="nav-about">About</button>
+      </div>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+        <button class="btn-launch" id="btn-login">
+          Upload <i class="fas fa-upload"></i>
+        </button>
+        <button class="btn-launch" id="btn-goto-dashboard">
+          Dashboard <i class="fas fa-tachometer-alt"></i>
+        </button>
+        <button class="btn-voice-mic" id="btn-voice-assistant" title="Voice Assistant">
+          <i class="fas fa-microphone"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Home (Hero) Section -->
+    <section id="section-home" class="dashboard-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; text-align: center; border: none; padding-top: 10rem;">
+      
+      <div style="max-width: 800px; z-index: 10; position: relative;">
+        <span class="uppercase font-mono text-xs tracking-wider" style="color: var(--primary); background: oklch(0.78 0.18 195 / 0.1); padding: 4px 12px; border-radius: 9999px; border: 1px solid oklch(0.78 0.18 195 / 0.3);">
+           <i class="fas fa-circle animate-pulse-slow" style="font-size: 8px;"></i> Live · AI Water Intelligence
+        </span>
+        <h1 class="font-display" style="font-size: 4.5rem; font-weight: 800; line-height: 1.1; margin-top: 1.5rem; margin-bottom: 24px;">
+          <span style="display:block;">Predict.</span>
+          <span style="display:block;" class="text-aurora">Protect.</span>
+          <span style="display:block;">Prosper.</span>
+        </h1>
+        <p class="text-muted text-lg" style="margin-bottom: 40px; max-width: 600px; margin-inline: auto;">
+          AI-powered water intelligence that keeps your fish alive — predicting risk before disease, stress, or mortality strikes.
+        </p>
+        <button class="btn-launch shadow-glow" id="btn-start" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Launch Dashboard &rarr;</button>
+      </div>
+
+      <!-- Floating Stats Card mirroring React Hero -->
+      <div class="hero-stats-card glass">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div style="text-align: left;">
+            <div class="text-xs uppercase tracking-wider text-muted">Pond #04 · Tilapia</div>
+            <div class="font-display font-semibold text-lg mt-1">All systems healthy</div>
+          </div>
+          <div style="border-radius: 999px; padding: 4px 12px; font-family: var(--font-mono); font-size: 0.75rem; background: oklch(0.78 0.16 165 / 0.15); color: var(--safe); border: 1px solid oklch(0.78 0.16 165 / 0.3);">
+            SAFE · 98%
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+          <div class="hero-metric"><i class="fas fa-flask" style="color: var(--primary);"></i> <div><div class="text-xs text-muted uppercase">pH</div><div class="font-mono font-semibold" id="hero-ph">7.2</div></div></div>
+          <div class="hero-metric"><i class="fas fa-tint" style="color: var(--primary);"></i> <div><div class="text-xs text-muted uppercase">DO</div><div class="font-mono font-semibold">6.8 <span class="text-xs text-muted">mg/L</span></div></div></div>
+          <div class="hero-metric"><i class="fas fa-thermometer-half" style="color: var(--primary);"></i> <div><div class="text-xs text-muted uppercase">Temp</div><div class="font-mono font-semibold">26.4 <span class="text-xs text-muted">°C</span></div></div></div>
+          <div class="hero-metric"><i class="fas fa-wind" style="color: var(--primary);"></i> <div><div class="text-xs text-muted uppercase">NH3</div><div class="font-mono font-semibold">0.02 <span class="text-xs text-muted">ppm</span></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard View -->
+    <section id="section-dashboard" class="dashboard-container container hidden">
+      <!-- Top header layout -->
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 2rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="position: relative; display: flex; width: 8px; height: 8px;"><span style="position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--safe);" class="animate-pulse-slow"></span><span style="position: relative; width: 100%; height: 100%; border-radius: 50%; background: var(--safe);"></span></span>
+            <span class="text-xs font-mono uppercase tracking-wider text-muted">Live · Pond #04</span>
+          </div>
+          <h1 class="font-display font-bold text-gradient" style="font-size: 2.5rem; margin-top: 0.5rem;">Tilapia Farm Dashboard</h1>
+        </div>
+        <div class="glass" style="padding: 0.75rem 1.25rem; display: flex; align-items: center; gap: 1rem;">
+           <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: var(--safe);"></i>
+           <div>
+              <div class="text-xs uppercase tracking-wider text-muted">AI Risk Score</div>
+              <div class="font-mono font-bold" style="font-size: 1.5rem; color: var(--safe);">94<span class="text-xs text-muted">/100</span></div>
+           </div>
+        </div>
+      </div>
+
+      <!-- Left Column / Full Grid for metrics -->
+      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h2 class="font-display" style="font-size: 1.25rem; font-weight: 600;">Live Telemerty</h2>
+          <button id="btn-toggle-live" class="btn-launch" style="background: oklch(0.78 0.16 165 / 0.15); border: 1px solid var(--safe); color: var(--safe);"><i class="fas fa-circle" style="font-size: 10px;"></i> Active Polling</button>
+        </div>
+
+        <div class="metrics-grid">
+          <!-- Card 1 -->
+          <div class="glass metric-card" id="ui-card-ph">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="metric-icon-box"><i class="fas fa-flask"></i></div>
+                <span class="text-sm font-semibold">pH Level</span>
+              </div>
+            </div>
+            <div class="font-mono font-bold" style="font-size: 2rem; margin-top: 1rem;" id="ui-val-ph">7.24</div>
+            <div class="text-xs text-muted mt-2">Safe Range: 6.5 - 8.5</div>
+          </div>
+          <!-- Card 2 -->
+          <div class="glass metric-card" id="ui-card-oxy">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="metric-icon-box"><i class="fas fa-tint"></i></div>
+                <span class="text-sm font-semibold">Dissolved O2</span>
+              </div>
+            </div>
+            <div class="font-mono font-bold" style="font-size: 2rem; margin-top: 1rem;" id="ui-val-oxy">6.8 <span class="text-sm text-muted">mg/L</span></div>
+            <div class="text-xs text-muted mt-2">Safe Range: &gt; 5.0</div>
+          </div>
+          <!-- Card 3 -->
+          <div class="glass metric-card" id="ui-card-temp">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="metric-icon-box" style="color: var(--warn);"><i class="fas fa-thermometer-half"></i></div>
+                <span class="text-sm font-semibold">Temperature</span>
+              </div>
+            </div>
+            <div class="font-mono font-bold" style="font-size: 2rem; margin-top: 1rem;" id="ui-val-temp">26.4<span class="text-sm text-muted">°C</span></div>
+            <div class="text-xs text-muted mt-2">Safe Range: 24 - 30</div>
+          </div>
+          <!-- Card 4 (Ammonia/Turbidity combined or 1) -->
+          <div class="glass metric-card">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="metric-icon-box"><i class="fas fa-wind"></i></div>
+                <span class="text-sm font-semibold">Ammonia</span>
+              </div>
+            </div>
+            <div class="font-mono font-bold" style="font-size: 2rem; margin-top: 1rem;">0.18<span class="text-sm text-muted">ppm</span></div>
+            <div class="text-xs text-muted mt-2">Safe Range: &lt; 0.25</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem;">
+          @media (min-width: 1024px) { style="grid-template-columns: 2fr 1fr;" }
+          <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+            
+            <div class="glass chart-container-card" style="flex: 2; min-width: 300px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 class="font-display font-semibold text-lg">24-Hour Trend</h3>
+                <div style="display: flex; gap: 8px; font-size: 12px; color: var(--muted-foreground);">
+                   <span><i class="fas fa-circle" style="color: var(--primary); font-size: 8px;"></i> pH</span>
+                   <span><i class="fas fa-circle" style="color: var(--safe); font-size: 8px;"></i> DO</span>
+                </div>
+              </div>
+              <div style="height: calc(100% - 40px); width: 100%;">
+                <canvas id="mainChart"></canvas>
+              </div>
+            </div>
+
+            <!-- AI Engine Custom Controls -->
+            <div class="glass" style="flex: 1; min-width: 300px; padding: 1.5rem;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">
+                <i class="fas fa-brain text-gradient" style="font-size: 1.25rem;"></i>
+                <h3 class="font-display font-semibold text-lg">Prediction Simulator</h3>
+              </div>
+              <p class="text-muted text-sm mb-4">Input custom values to test the Random Forest risk engine horizontally.</p>
+              
+              <div style="margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <label class="text-xs font-semibold text-muted">Turbidity (NTU)</label>
+                    <span class="font-mono text-xs text-primary" id="val-turb-label">25.0</span>
+                  </div>
+                  <input type="range" id="in-turb" min="0" max="100" step="1" value="25.0" oninput="document.getElementById('val-turb-label').innerText = this.value">
+                </div>
+                <div>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <label class="text-xs font-semibold text-muted">pH Level Override</label>
+                    <span class="font-mono text-xs text-primary" id="val-ph-label">7.2</span>
+                  </div>
+                  <input type="range" id="in-ph" min="5" max="10" step="0.1" value="7.2" oninput="document.getElementById('val-ph-label').innerText = this.value">
+                </div>
+                 
+                <!-- Using old Risk Ring format here -->
+                <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+                    <div class="circle-progress" id="ui-risk-ring" style="width: 80px; height: 80px;">
+                      <div class="circle-inner" style="width: 66px; height: 66px;">
+                        <span style="font-size: 1.1rem; font-weight: 700; color: var(--safe);" class="font-mono" id="ui-risk-val">12%</span>
+                        <span class="text-xs text-muted" style="font-size: 9px;">RISK</span>
+                      </div>
+                    </div>
+                    <button class="btn-launch" id="btn-predict-risk" style="flex: 1;"><i class="fas fa-bolt"></i> Evaluate</button>
+                </div>
+
+                <div id="ai-result" class="hidden" style="margin-top: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 12px; background: oklch(0.16 0.03 220 / 0.5);">
+                   <div style="font-size: 0.75rem;" class="text-muted uppercase tracking-wider">AI Verdict</div>
+                   <div id="ai-status" class="font-display font-bold" style="font-size: 1.5rem; color: var(--primary); margin: 4px 0;">--</div>
+                   <div id="ai-action" style="font-size: 0.85rem; color: var(--muted-foreground);">--</div>
+                </div>
+
+              </div>
+            </div>
+            
+            <!-- Live Alerts -->
+            <div class="glass" style="flex: 1; min-width: 300px; padding: 1.5rem; display: flex; flex-direction: column;">
+               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+                 <h3 class="font-display font-semibold text-lg" style="display: flex; align-items: center; gap: 8px;">
+                   <i class="fas fa-bell" style="color: var(--warn);"></i> System Log
+                 </h3>
+                 <span class="text-xs font-mono text-safe bg-safe/10 border border-safe/30 px-2 py-0.5 rounded-full">LIVE</span>
+               </div>
+               
+               <div id="alerts-container" class="alert-sidebar" style="flex: 1; overflow-y: auto; max-height: 300px; padding-right: 5px;">
+                 <!-- alerts injected here -->
+               </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- === ROOT CAUSE ANALYSIS (NEW EXTENSION) === -->
+        <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1.5rem;">
+          <div class="glass" style="flex: 2; min-width: 300px; padding: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem;">
+              <i class="fas fa-search-plus text-gradient" style="font-size: 1.25rem;"></i>
+              <h3 class="font-display font-semibold text-lg">Root Cause Analysis</h3>
+            </div>
+            <p class="text-muted text-sm mb-4" id="rca-summary">Loading feature importance data...</p>
+            <div id="rca-chart-container" style="display: flex; flex-direction: column; gap: 10px;"></div>
+          </div>
+
+          <!-- EARLY WARNING TIMELINE -->
+          <div class="glass" style="flex: 1; min-width: 300px; padding: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1rem;">
+              <i class="fas fa-clock text-gradient" style="font-size: 1.25rem;"></i>
+              <h3 class="font-display font-semibold text-lg">48h Prediction Timeline</h3>
+            </div>
+            <div id="timeline-container" class="timeline-scroll"></div>
+          </div>
+        </div>
+
+        <!-- REPORT + DEMO MODE ROW -->
+        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.5rem; align-items: center;">
+          <button class="btn-launch" id="btn-generate-report" style="gap: 8px;">
+            <i class="fas fa-file-alt"></i> Generate Report
+          </button>
+          <div class="demo-toggle-container" style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+            <span class="text-xs font-mono text-muted uppercase tracking-wider">Live Simulation Mode</span>
+            <label class="demo-toggle-switch">
+              <input type="checkbox" id="demo-mode-toggle">
+              <span class="demo-toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Disease / Neural Scan Section -->
+    <section id="section-disease" class="dashboard-container container hidden">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+         <span class="text-xs font-mono uppercase tracking-[0.3em] text-primary">Biometric Intelligence</span>
+         <h2 class="font-display font-bold" style="font-size: 2.5rem; margin-top: 0.5rem; margin-bottom: 1rem;">MobileNetV2 <span class="text-gradient">Neural Scan</span></h2>
+         <p class="text-muted text-lg">Upload cellular or macroscopic biological samples. Our convolutional neural network evaluates against 7 distinct freshwater disease signatures.</p>
+      </div>
+
+      <div class="glass" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+        <div class="dropzone" id="drop-zone">
+          <i class="fas fa-microscope" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+          <h3 class="font-display font-semibold text-lg">Select or drop a specimen image here</h3>
+          <p class="text-muted text-sm mt-2">Supports JPG, PNG up to 5MB</p>
+          <input type="file" id="file-input" class="hidden">
+        </div>
+
+        <div id="disease-preview" class="hidden" style="text-align: center;">
+           <img id="img-preview" src="" style="width: 100%; max-height: 300px; object-fit: contain; border-radius: var(--radius-xl); border: 1px solid var(--border); margin-bottom: 1.5rem; background: var(--background);">
+           <button class="btn-launch" id="btn-scan" style="width: 100%; font-size: 1.1rem; padding: 1rem;"><i class="fas fa-bolt"></i> Initiate CNN Scan</button>
+        </div>
+
+        <div id="disease-result" class="hidden" style="margin-top: 1rem; text-align: left; padding: 1.5rem; background: oklch(0.78 0.18 195 / 0.05); border: 1px solid var(--primary); border-radius: var(--radius-xl);">
+           <h3 class="font-display font-semibold" style="margin-bottom: 1.5rem; border-bottom: 1px solid oklch(0.78 0.18 195 / 0.2); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+              Diagnostic Report <i class="fas fa-check-circle" style="color: var(--safe);"></i>
+           </h3>
+           
+           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+             <div>
+               <p class="text-muted text-xs uppercase tracking-wider mb-1">Detected Pathology</p>
+               <p class="font-display font-bold" style="font-size: 1.25rem; color: var(--primary);" id="ui-pathology">Aeromoniasis</p>
+             </div>
+             <div>
+               <p class="text-muted text-xs uppercase tracking-wider mb-1">Network Confidence</p>
+               <p class="font-mono font-bold" style="font-size: 1.25rem;" id="ui-confidence">98.4%</p>
+             </div>
+             <div style="grid-column: 1 / -1;">
+               <p class="text-muted text-xs uppercase tracking-wider mb-1">Suggested Countermeasure</p>
+               <p style="font-size: 1rem; color: var(--warn);" id="ui-treatment">Quarantine and apply broad-spectrum antibiotic.</p>
+             </div>
+           </div>
+           
+           <button class="btn-launch" id="btn-reset-scan" style="margin-top: 2rem; background: oklch(0.16 0.03 220); border: 1px solid var(--border); color: var(--foreground); width: 100%; font-size: 0.95rem;">Scan Another Sample</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Species Section -->
+    <section id="section-species" class="dashboard-container container hidden">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+         <span class="text-xs font-mono uppercase tracking-[0.3em] text-primary">Reference</span>
+         <h2 class="font-display font-bold" style="font-size: 2.5rem; margin-top: 0.5rem; margin-bottom: 1rem;">Species <span class="text-gradient">Threshold Library</span></h2>
+         <p class="text-muted text-lg">Every species has its own envelope of safety. AquaPulse predictions adapt automatically — these are the science-backed reference ranges we use.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        <!-- Species items -->
+        <article class="glass" style="padding: 1.5rem; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.5rem;">🐟</div>
+            <div><h3 class="font-display font-bold text-xl">Tilapia</h3><p class="text-xs text-muted">Hardy tropical species, tolerates wide ranges.</p></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">pH</div><div class="font-mono text-sm font-bold mt-1">6.5 - 8.5</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Temp</div><div class="font-mono text-sm font-bold mt-1">24 - 30 °C</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Dissolved O2</div><div class="font-mono text-sm font-bold mt-1">&gt; 5 mg/L</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Ammonia</div><div class="font-mono text-sm font-bold mt-1">&lt; 0.05 ppm</div>
+             </div>
+          </div>
+        </article>
+
+        <article class="glass" style="padding: 1.5rem; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.5rem;">🐡</div>
+            <div><h3 class="font-display font-bold text-xl">Catfish</h3><p class="text-xs text-muted">Bottom dweller, sensitive to oxygen drops.</p></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">pH</div><div class="font-mono text-sm font-bold mt-1">6.0 - 8.0</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Temp</div><div class="font-mono text-sm font-bold mt-1">26 - 30 °C</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Dissolved O2</div><div class="font-mono text-sm font-bold mt-1">&gt; 4 mg/L</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Ammonia</div><div class="font-mono text-sm font-bold mt-1">&lt; 0.05 ppm</div>
+             </div>
+          </div>
+        </article>
+        
+        <article class="glass" style="padding: 1.5rem; transition: transform 0.3s; cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 2.5rem;">🦐</div>
+            <div><h3 class="font-display font-bold text-xl">Shrimp</h3><p class="text-xs text-muted">Brackish water; salinity 10-25 ppt ideal.</p></div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">pH</div><div class="font-mono text-sm font-bold mt-1">7.5 - 8.5</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Temp</div><div class="font-mono text-sm font-bold mt-1">26 - 32 °C</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Dissolved O2</div><div class="font-mono text-sm font-bold mt-1">&gt; 5 mg/L</div>
+             </div>
+             <div style="background: oklch(0.16 0.03 220 / 0.4); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem;">
+               <div class="text-[10px] uppercase tracking-wider text-muted font-semibold">Ammonia</div><div class="font-mono text-sm font-bold mt-1">&lt; 0.03 ppm</div>
+             </div>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <!-- About Section -->
+    <section id="section-about" class="dashboard-container container hidden" style="padding-top: 10rem;">
+      <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+         <span class="text-xs font-mono uppercase tracking-[0.3em] text-primary">Mission</span>
+         <h1 class="font-display font-bold" style="font-size: 3.5rem; margin-top: 1rem; margin-bottom: 2rem;">Built for the <br><span class="text-gradient">silent guardians</span> of fish.</h1>
+         <p class="text-muted text-lg" style="margin-bottom: 4rem;">Globally, small-scale aquaculture loses billions every year to preventable mortality events. AquaPulse exists to close that gap — making research-grade water intelligence accessible to every farmer with a phone.</p>
+         
+         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; text-align: left;">
+            <div class="glass" style="padding: 2rem;">
+              <div style="width: 48px; height: 48px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: var(--primary-foreground); font-size: 1.5rem;"><i class="fas fa-microscope"></i></div>
+              <h3 class="font-display font-semibold text-xl mb-2">Sensor-grade data</h3>
+              <p class="text-muted text-sm">Industrial IoT probes sample pH, DO, temperature, ammonia, and turbidity at 1 Hz.</p>
+            </div>
+            <div class="glass" style="padding: 2rem;">
+              <div style="width: 48px; height: 48px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: var(--primary-foreground); font-size: 1.5rem;"><i class="fas fa-brain"></i></div>
+              <h3 class="font-display font-semibold text-xl mb-2">Species-aware ML</h3>
+              <p class="text-muted text-sm">Gradient-boosted models are tuned per species using published lethal/safe thresholds to provide 48h forecasts.</p>
+            </div>
+         </div>
+      </div>
+    </section>
+
+    <!-- ==================== SIMULATION LAB (NEW PAGE) ==================== -->
+    <section id="section-simulation" class="dashboard-container container hidden">
+      <div style="text-align: center; max-width: 700px; margin: 0 auto 3rem;">
+        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--primary);">Digital Twin</span>
+        <h2 class="font-display font-bold" style="font-size: 2.5rem; margin-top: 0.5rem; margin-bottom: 1rem;">Simulation <span class="text-gradient">Laboratory</span></h2>
+        <p class="text-muted text-lg">Adjust water parameters and simulate their impact on fish health. Compare baseline vs modified conditions in real-time.</p>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; max-width: 1000px; margin: 0 auto;">
+        <!-- Sliders Panel -->
+        <div class="glass" style="flex: 1; min-width: 320px; padding: 2rem;">
+          <h3 class="font-display font-semibold text-lg" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-sliders-h" style="color: var(--primary);"></i> Parameter Controls</h3>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><label class="text-xs font-semibold text-muted">pH Level</label><span class="font-mono text-xs" style="color: var(--primary);" id="sim-ph-label">7.2</span></div>
+              <input type="range" id="sim-ph" min="4" max="11" step="0.1" value="7.2" oninput="document.getElementById('sim-ph-label').innerText=this.value">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><label class="text-xs font-semibold text-muted">Temperature (°C)</label><span class="font-mono text-xs" style="color: var(--primary);" id="sim-temp-label">26.0</span></div>
+              <input type="range" id="sim-temp" min="15" max="40" step="0.5" value="26.0" oninput="document.getElementById('sim-temp-label').innerText=this.value">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><label class="text-xs font-semibold text-muted">Turbidity (NTU)</label><span class="font-mono text-xs" style="color: var(--primary);" id="sim-turb-label">25.0</span></div>
+              <input type="range" id="sim-turb" min="0" max="100" step="1" value="25" oninput="document.getElementById('sim-turb-label').innerText=this.value">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><label class="text-xs font-semibold text-muted">Dissolved O2 (mg/L)</label><span class="font-mono text-xs" style="color: var(--primary);" id="sim-oxy-label">6.5</span></div>
+              <input type="range" id="sim-oxy" min="0" max="15" step="0.1" value="6.5" oninput="document.getElementById('sim-oxy-label').innerText=this.value">
+            </div>
+            <div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;"><label class="text-xs font-semibold text-muted">Ammonia (ppm)</label><span class="font-mono text-xs" style="color: var(--primary);" id="sim-amm-label">0.02</span></div>
+              <input type="range" id="sim-amm" min="0" max="2" step="0.01" value="0.02" oninput="document.getElementById('sim-amm-label').innerText=this.value">
+            </div>
+            <button class="btn-launch" id="btn-run-sim" style="width: 100%; margin-top: 0.5rem; font-size: 1rem; padding: 0.75rem;"><i class="fas fa-play"></i> Run Simulation</button>
+          </div>
+        </div>
+
+        <!-- Results: Before vs After -->
+        <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 1.5rem;">
+          <div style="display: flex; gap: 1rem;">
+            <div class="glass sim-compare-card" style="flex: 1; padding: 1.5rem; text-align: center;">
+              <div class="text-xs uppercase tracking-wider text-muted font-semibold" style="margin-bottom: 8px;">BEFORE (Baseline)</div>
+              <div class="font-mono font-bold" style="font-size: 2rem; color: var(--safe);" id="sim-before-score">8%</div>
+              <div class="text-sm text-muted" id="sim-before-condition">Safe</div>
+            </div>
+            <div class="glass sim-compare-card" style="flex: 1; padding: 1.5rem; text-align: center;">
+              <div class="text-xs uppercase tracking-wider text-muted font-semibold" style="margin-bottom: 8px;">AFTER (Modified)</div>
+              <div class="font-mono font-bold" style="font-size: 2rem; color: var(--primary);" id="sim-after-score">--</div>
+              <div class="text-sm text-muted" id="sim-after-condition">Awaiting simulation</div>
+            </div>
+          </div>
+          <div class="glass" style="flex: 1; padding: 1.5rem;">
+            <h3 class="font-display font-semibold text-lg" style="margin-bottom: 1rem;">Risk Delta</h3>
+            <div id="sim-risk-delta" class="font-mono font-bold" style="font-size: 2.5rem; text-align: center; color: var(--primary); margin: 1rem 0;">—</div>
+            <div id="sim-params-detail" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== AI FISH DOCTOR (NEW PAGE) ==================== -->
+    <section id="section-ai-doctor" class="dashboard-container container hidden">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--primary);">Conversational AI</span>
+        <h2 class="font-display font-bold" style="font-size: 2.5rem; margin-top: 0.5rem; margin-bottom: 1rem;">AI Fish <span class="text-gradient">Doctor</span></h2>
+        <p class="text-muted text-lg">Ask questions about water quality, fish health, and get AI-powered diagnostic advice in real-time.</p>
+      </div>
+
+      <div class="glass" style="max-width: 700px; margin: 0 auto; padding: 0; display: flex; flex-direction: column; height: 600px;">
+        <!-- Chat Header -->
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
+          <div style="width: 40px; height: 40px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-foreground);">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div>
+            <div class="font-display font-semibold">Dr. AquaAI</div>
+            <div class="text-xs text-muted"><i class="fas fa-circle" style="font-size: 6px; color: var(--safe);"></i> Online</div>
+          </div>
+        </div>
+        <!-- Chat Messages -->
+        <div id="chat-messages" style="flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+          <div class="chat-bubble-ai">
+            <div class="chat-bubble-content">
+              <p>Hello! I'm Dr. AquaAI, your intelligent aquaculture health assistant. 🐟</p>
+              <p style="margin-top: 6px;">Ask me about water quality, fish diseases, or any aquaculture concerns. I'll analyze your data and provide actionable advice.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Suggested Chips -->
+        <div id="chat-chips" style="padding: 0.5rem 1.5rem; display: flex; flex-wrap: wrap; gap: 6px;">
+          <button class="chip" onclick="sendDoctorMessage('Why is my pH dropping?')">Why is my pH dropping?</button>
+          <button class="chip" onclick="sendDoctorMessage('How to increase dissolved oxygen?')">How to increase DO?</button>
+          <button class="chip" onclick="sendDoctorMessage('Ammonia levels are high, what should I do?')">High ammonia help</button>
+          <button class="chip" onclick="sendDoctorMessage('General health check for my pond')">General health check</button>
+        </div>
+        <!-- Chat Input -->
+        <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border); display: flex; gap: 8px;">
+          <input type="text" id="chat-input" placeholder="Ask Dr. AquaAI..." style="flex: 1; border-radius: 9999px; padding: 0.6rem 1rem;">
+          <button class="btn-launch" id="btn-chat-send" style="border-radius: 50%; width: 42px; height: 42px; padding: 0;"><i class="fas fa-paper-plane"></i></button>
+          <button class="btn-launch" id="btn-chat-mic" style="border-radius: 50%; width: 42px; height: 42px; padding: 0; background: var(--secondary); box-shadow: none;"><i class="fas fa-microphone"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CHALLENGE MODE (NEW PAGE) ==================== -->
+    <section id="section-challenge" class="dashboard-container container hidden">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+        <span class="text-xs font-mono uppercase tracking-wider" style="color: var(--primary);">Gamified Learning</span>
+        <h2 class="font-display font-bold" style="font-size: 2.5rem; margin-top: 0.5rem; margin-bottom: 1rem;">Scenario <span class="text-gradient">Challenge</span></h2>
+        <p class="text-muted text-lg">Test your aquaculture crisis management skills. Can you make the right decisions under pressure?</p>
+      </div>
+
+      <div style="max-width: 700px; margin: 0 auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div class="font-mono text-sm text-muted">Question <span id="challenge-current">1</span> / <span id="challenge-total">5</span></div>
+          <div class="glass" style="padding: 0.5rem 1rem; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-trophy" style="color: var(--warn);"></i>
+            <span class="font-mono font-bold" id="challenge-score">0</span>
+            <span class="text-xs text-muted">pts</span>
+          </div>
+        </div>
+
+        <div class="glass" style="padding: 2rem;" id="challenge-card">
+          <div class="text-xs uppercase tracking-wider text-muted" style="margin-bottom: 8px;" id="challenge-difficulty">Medium</div>
+          <h3 class="font-display font-semibold" style="font-size: 1.25rem; margin-bottom: 1.5rem;" id="challenge-question">Loading challenge...</h3>
+          <div id="challenge-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
+          <div id="challenge-result" class="hidden" style="margin-top: 1.5rem; padding: 1rem; border-radius: 12px;"></div>
+          <button class="btn-launch hidden" id="btn-next-challenge" style="width: 100%; margin-top: 1rem;">Next Challenge <i class="fas fa-arrow-right"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+       <svg class="footer-svg" viewBox="0 0 1440 60" fill="none" preserveAspectRatio="none"><path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,0 L0,0 Z" fill="currentColor"/></svg>
+       <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; padding-top: 2rem;">
+         <div style="max-width: 300px;">
+           <div class="logo-container" style="margin-bottom: 1rem;">
+             <div class="logo-icon"><i class="fas fa-water"></i></div>
+             <span>Aqua<span class="text-gradient">Pulse</span></span>
+           </div>
+           <p class="text-muted text-sm">Real-time water intelligence and neural disease scanning for the future of small-scale aquaculture.</p>
+         </div>
+         <div style="display: flex; gap: 3rem;">
+           <div>
+             <h4 class="font-display font-semibold mb-4 text-foreground">Platform</h4>
+             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;" class="text-muted">
+               <li>Dashboard</li><li>Upload Specimen</li><li>Species Reference</li>
+             </ul>
+           </div>
+           <div>
+             <h4 class="font-display font-semibold mb-4 text-foreground">Company</h4>
+             <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;" class="text-muted">
+               <li>About Us</li><li>Research</li><li>Contact</li>
+             </ul>
+           </div>
+         </div>
+       </div>
+       <div class="container" style="margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; font-size: 0.75rem; color: var(--muted-foreground);">
+         © 2026 AquaPulse. All rights reserved. Built for aquaculture globally.
+       </div>
+    </footer>
+
+    <!-- Global Toast Alert -->
+    <div id="global-toast" class="global-toast">
+      <i class="fas fa-exclamation-triangle" style="font-size: 1.5rem; color: var(--danger);"></i>
+      <div>
+        <h4 class="font-display font-semibold" style="color: white; margin-bottom: 2px;">SYSTEM ALERT</h4>
+        <p id="toast-message" class="text-xs" style="color: var(--muted-foreground);">Critical oxygen depletion detected!</p>
+      </div>
+    </div>
+
+    <!-- ==================== REPORT PREVIEW MODAL ==================== -->
+    <div id="report-modal" class="overlay-modal hidden">
+      <div class="glass overlay-modal-content" style="max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 class="font-display font-bold text-gradient" style="font-size: 1.5rem;"><i class="fas fa-file-alt"></i> Intelligence Report</h2>
+          <button class="btn-launch" id="btn-close-report" style="background: var(--secondary); box-shadow: none; border-radius: 50%; width: 36px; height: 36px; padding: 0;"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="report-content"></div>
+        <button class="btn-launch" id="btn-download-report" style="width: 100%; margin-top: 1.5rem;"><i class="fas fa-download"></i> Download PDF</button>
+      </div>
+    </div>
+
+    <!-- ==================== CRITICAL ALERT OVERLAY MODAL ==================== -->
+    <div id="alert-overlay-modal" class="overlay-modal hidden">
+      <div class="glass overlay-modal-content" style="max-width: 500px; width: 90%; padding: 2rem; text-align: center; border: 2px solid var(--danger); animation: sirenPulse 1.5s infinite;">
+        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: var(--danger); margin-bottom: 1rem;"></i>
+        <h2 class="font-display font-bold" style="font-size: 1.75rem; color: var(--danger); margin-bottom: 0.5rem;">⚠️ CRITICAL ALERT</h2>
+        <p id="alert-overlay-message" class="text-muted text-lg" style="margin-bottom: 1.5rem;">Water condition critical!</p>
+        <div id="alert-overlay-details" style="text-align: left; margin-bottom: 1.5rem;"></div>
+        <button class="btn-launch" id="btn-dismiss-alert" style="width: 100%; background: linear-gradient(135deg, var(--danger), oklch(0.55 0.2 25));"><i class="fas fa-check"></i> Acknowledge & Dismiss</button>
+      </div>
+    </div>
+
+    <!-- ==================== VOICE ASSISTANT OVERLAY ==================== -->
+    <div id="voice-overlay" class="overlay-modal hidden">
+      <div class="glass overlay-modal-content" style="max-width: 400px; width: 90%; padding: 2rem; text-align: center;">
+        <div class="voice-pulse-ring" id="voice-pulse-ring">
+          <i class="fas fa-microphone" style="font-size: 2rem; color: var(--primary);"></i>
+        </div>
+        <h3 class="font-display font-semibold" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Listening...</h3>
+        <p id="voice-transcript" class="text-muted text-sm">Say a command like "Show risk" or "Open simulation"</p>
+        <button class="btn-launch" id="btn-close-voice" style="margin-top: 1.5rem; background: var(--secondary); box-shadow: none;">Cancel</button>
+      </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
